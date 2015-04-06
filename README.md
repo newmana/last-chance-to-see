@@ -1,4 +1,4 @@
-# last_chance_to_see
+# Last Chance To See CD-ROMs
 
 This is an attempt to write a player of the CD-ROM version of "Last Chance to See" by Douglas Adams and Mark Carwardine.
 
