@@ -41,14 +41,14 @@ isPress KeyState'Repeating = True
 isPress _                  = False
 
 --loop :: Window -> IO()
-loop glossState texture window = do
+loop glossState window texture = do
     threadDelay 20000
     pollEvents
     renderFrame window texture glossState
     k <- keyIsPressed window Key'Escape
     if k
         then return()
-        else loop glossState texture window
+        else loop glossState window texture
 
 main :: IO ()
 main = do
@@ -59,7 +59,7 @@ main = do
     withWindow width height "Resurrection" $ \win -> do
         case texture of
             Nothing -> return()
-            Just x  -> loop glossState x win
+            Just x  -> loop glossState win x 
         --loop glossState win
         --exitSuccess
     -- where loop glossState win = do
