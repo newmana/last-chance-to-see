@@ -27,11 +27,6 @@ withWindow width height title f = do
         simpleErrorCallback e s =
             putStrLn $ unwords [show e, show s]
 
--- renderFrame :: Window -> IO()
-renderFrame window glossState texture = do
-    displayPicture (640, 480) white glossState 1.0 $ texture
-    swapBuffers window
-
 keyIsPressed :: Window -> Key -> IO Bool
 keyIsPressed win key = isPress `fmap` GLFW.getKey win key
 
@@ -40,16 +35,10 @@ isPress KeyState'Pressed   = True
 isPress KeyState'Repeating = True
 isPress _                  = False
 
---loop :: Window -> IO()
--- loop :: Graphics.Gloss.Internals.Rendering.State.State -> Window -> Picture -> IO ()
-loop glossState window texture = do
-    threadDelay 20000
-    pollEvents
-    renderFrame window glossState texture
-    k <- keyIsPressed window Key'Escape
-    if k
-        then return()
-        else loop glossState window texture
+-- renderFrame :: Window -> RS.stateInit -> Picture -> IO ()
+renderFrame window glossState texture = do
+  displayPicture (640, 480) white glossState 1.0 $ texture
+  swapBuffers window
 
 main :: IO ()
 main = do
@@ -59,14 +48,12 @@ main = do
     texture <- loadJuicy "/Volumes/LAST_CH_1/CHAPTER1/640_8/_DNA_AND.DIB"
     withWindow width height "Resurrection" $ \win -> do
         maybe (return ()) (loop glossState win) texture
-        --case texture of
-        --    Nothing -> return()
-        --    Just x  -> loop glossState win x 
-        --loop glossState win
-        --exitSuccess
-    -- where loop glossState win = do
-    --    threadDelay 20000
-        --pollEvents
-        --renderFrame window glossState
-        --k <- keyIsPressed window Key'Escape
-        --unless k $ loop glossState window
+      where     
+        loop glossState window texture = do
+          threadDelay 20000
+          pollEvents
+          renderFrame window glossState texture
+          k <- keyIsPressed window Key'Escape
+          if k
+            then return()
+            else loop glossState window texture
