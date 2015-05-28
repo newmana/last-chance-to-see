@@ -28,7 +28,7 @@ withWindow width height title f = do
             putStrLn $ unwords [show e, show s]
 
 -- renderFrame :: Window -> IO()
-renderFrame window texture glossState = do
+renderFrame window glossState texture = do
     displayPicture (640, 480) white glossState 1.0 $ texture
     swapBuffers window
 
@@ -41,10 +41,11 @@ isPress KeyState'Repeating = True
 isPress _                  = False
 
 --loop :: Window -> IO()
+-- loop :: Graphics.Gloss.Internals.Rendering.State.State -> Window -> Picture -> IO ()
 loop glossState window texture = do
     threadDelay 20000
     pollEvents
-    renderFrame window texture glossState
+    renderFrame window glossState texture
     k <- keyIsPressed window Key'Escape
     if k
         then return()
@@ -57,9 +58,10 @@ main = do
         height = 480
     texture <- loadJuicy "/Volumes/LAST_CH_1/CHAPTER1/640_8/_DNA_AND.DIB"
     withWindow width height "Resurrection" $ \win -> do
-        case texture of
-            Nothing -> return()
-            Just x  -> loop glossState win x 
+        maybe (return ()) (loop glossState win) texture
+        --case texture of
+        --    Nothing -> return()
+        --    Just x  -> loop glossState win x 
         --loop glossState win
         --exitSuccess
     -- where loop glossState win = do
