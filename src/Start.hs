@@ -40,7 +40,7 @@ main = do
     let width = 640
         height = 480
     texture <- loadJuicy "/Volumes/LAST_CH_1/CHAPTER1/640_8/_DNA_AND.DIB"
-    withWindow width height "Resurrection" $ \win -> do
+    withWindow width height "Last Chance to See" $ \win -> do
         maybe (return ()) (loop glossState win) texture
       where     
         loop glossState window texture = do
