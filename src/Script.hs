@@ -5,19 +5,20 @@ import Control.Monad
 import Data.Maybe
 import Control.Monad.IO.Class
 import Control.Lens
+import GHC.Float
 
 data Direction = Direction {
 		directionStartTime :: Float,
 		directionNextTime :: Float,
 		directionPreviousTime :: Float,
-		directionIndex :: Float,
+		directionIndex :: Integer,
 		directionCommand :: String,
 		directionValue :: String
 	} deriving (Show, Read, Eq, Ord)
 
 
 directionFromTuple :: [Float] -> [String] -> Direction
-directionFromTuple f s = Direction (f!!0) (f!!1) (f!!2) (f!!3) (s!!0) (s!!1)
+directionFromTuple f s = Direction (f!!0) (f!!1) (f!!2) (round $ f!!3) (s!!0) (s!!1)
 
 directionFromStr :: BS.ByteString -> Direction
 directionFromStr s = directionFromTuple a b
